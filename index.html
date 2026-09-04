@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0C0D10">
+<title>Sudarshan Reddy Rajapurada — Network Engineer</title>
+<meta name="description" content="Network engineer specialising in Palo Alto NGFW, Zscaler Zero Trust access, and Cisco routing and switching across enterprise and hybrid-cloud environments.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0C0D10;
+  --panel:#16181D;
+  --panel2:#1D2027;
+  --rule:#2B303A;
+  --bone:#EDEDF0;
+  --dim:#8A9098;
+  --orange:#FA582D;
+  --amber:#FF9D4D;
+  --sans:'Archivo',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --gutter:clamp(1.15rem,5vw,4rem);
+  --maxw:1120px;
+  --sep:46px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--ink);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+
+body{
+  background:transparent;
+  color:var(--bone);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  overflow-wrap:break-word;
+}
+
+a{
+  color:var(--amber);
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,157,77,.32);
+  transition:color .15s,border-color .15s;
+  overflow-wrap:anywhere;
+}
+@media(hover:hover){
+  a:hover{color:var(--orange);border-bottom-color:var(--orange)}
+}
+a:focus-visible{outline:2px solid var(--orange);outline-offset:3px;border-radius:2px}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter)}
+
+.label{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--orange);display:block;margin-bottom:1.05rem}
+
+h2{font-size:clamp(1.45rem,5.5vw,2.1rem);font-weight:600;letter-spacing:-.02em;line-height:1.15;margin-bottom:2rem}
+h3{font-size:clamp(1rem,3.6vw,1.06rem);font-weight:600;letter-spacing:-.01em;margin-bottom:.5rem}
+p{max-width:62ch}
+
+section{padding:clamp(3rem,9vw,6.5rem) 0;border-top:1px solid var(--rule)}
+
+/* ---- animated packet field ---- */
+#bg{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100vh;
+  height:100dvh;
+  z-index:-2;
+  pointer-events:none;
+}
+
+#bg-veil{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100vh;
+  height:100dvh;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse 72% 55% at 50% 38%, rgba(12,13,16,.74), rgba(12,13,16,.34) 62%, transparent 100%),
+    linear-gradient(to bottom, rgba(12,13,16,.40), rgba(12,13,16,.66));
+}
+
+/* ================= HERO ================= */
+.hero{padding:clamp(2.75rem,10vw,6rem) 0 clamp(2.5rem,7vw,5rem);border-top:none;overflow:hidden}
+.hero-grid{display:grid;gap:2.5rem;align-items:center}
+@media(min-width:940px){.hero-grid{grid-template-columns:1fr 420px;gap:4rem}}
+
+.hero-name{
+  font-size:clamp(1.95rem,8.5vw,3.9rem);
+  font-weight:700;letter-spacing:-.035em;line-height:1.03;margin-bottom:1rem;
+}
+.hero-role{font-family:var(--mono);font-size:clamp(.75rem,3.2vw,.95rem);color:var(--amber);margin-bottom:1.8rem}
+.hero-role .sep{color:var(--rule);padding:0 .45rem}
+.hero-line{font-size:clamp(1.08rem,4.4vw,1.55rem);line-height:1.42;letter-spacing:-.015em;max-width:28ch;margin-bottom:2rem}
+
+.hero-meta{font-family:var(--mono);font-size:clamp(.7rem,2.9vw,.78rem);color:var(--dim);display:flex;flex-wrap:wrap;gap:.5rem 1.35rem}
+.hero-meta strong{color:var(--bone);font-weight:500}
+
+/* ---- 3D topology ---- */
+.scene{
+  height:clamp(300px,72vw,430px);
+  perspective:1200px;
+  perspective-origin:50% 50%;
+  display:flex;align-items:center;justify-content:center;
+  overflow:visible;
+}
+
+.stackwrap{
+  position:relative;
+  width:min(206px,48vw);
+  height:min(206px,48vw);
+  /* the tower grows upward once tilted, so nudge it down to sit centred */
+  margin-top:calc(var(--sep) * 1.15);
+  transform-style:preserve-3d;
+  transform:rotateX(58deg) rotateZ(-38deg);
+  transition:transform .35s cubic-bezier(.2,.7,.3,1);
+  animation:rise 1.2s cubic-bezier(.2,.8,.25,1) both;
+}
+
+@keyframes rise{
+  from{opacity:0;transform:rotateX(78deg) rotateZ(-38deg) translateZ(-60px)}
+  to{opacity:1;transform:rotateX(58deg) rotateZ(-38deg)}
+}
+
+@keyframes orbit{
+  0%  {transform:rotateX(58deg) rotateZ(-46deg)}
+  50% {transform:rotateX(54deg) rotateZ(-26deg)}
+  100%{transform:rotateX(58deg) rotateZ(-46deg)}
+}
+
+/* touch devices can't hover, so the stack orbits gently on its own */
+@media(hover:none){
+  .stackwrap{animation:rise 1.2s cubic-bezier(.2,.8,.25,1) both, orbit 22s ease-in-out 1.2s infinite}
+}
+
+.layer{
+  position:absolute;inset:0;
+  border:1px solid var(--rule);
+  background:linear-gradient(135deg,rgba(29,32,39,.86),rgba(12,13,16,.5));
+  transform-style:preserve-3d;
+  box-shadow:0 0 40px rgba(0,0,0,.5);
+}
+.layer::after{
+  content:attr(data-name);
+  position:absolute;left:7px;bottom:5px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.04em;
+  color:var(--dim);white-space:nowrap;
+}
+.layer:nth-child(2){transform:translateZ(0)}
+.layer:nth-child(3){transform:translateZ(var(--sep))}
+.layer:nth-child(4){transform:translateZ(calc(var(--sep)*2))}
+.layer:nth-child(5){transform:translateZ(calc(var(--sep)*3))}
+.layer:nth-child(6){transform:translateZ(calc(var(--sep)*4))}
+
+.layer.hot{border-color:var(--orange)}
+.layer.hot::after{color:var(--orange)}
+
+.node{
+  position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--amber);box-shadow:0 0 8px rgba(255,157,77,.75);
+}
+.layer.hot .node{background:var(--orange);box-shadow:0 0 10px rgba(250,88,45,.95)}
+
+.riser{
+  position:absolute;left:50%;top:50%;
+  width:1px;height:calc(var(--sep)*4);
+  background:linear-gradient(to top,rgba(250,88,45,.75),rgba(255,157,77,.12));
+  transform:translate(-50%,-50%) rotateX(90deg);
+}
+
+@media(max-width:720px){
+  :root{--sep:32px}
+  .layer::after{font-size:8px}
+  .node{width:5px;height:5px}
+}
+
+/* ================= EXPERIENCE ================= */
+.job{border-top:1px solid var(--rule);padding:2.2rem 0;display:grid;gap:1rem}
+.job:first-of-type{border-top:none;padding-top:0}
+@media(min-width:880px){
+  .job{grid-template-columns:16rem 1fr;gap:2.5rem}
+  .job-head{padding-top:.15rem}
+}
+
+.job-org{font-size:clamp(1.05rem,4vw,1.15rem);font-weight:600;letter-spacing:-.015em}
+.job-title{font-family:var(--mono);font-size:.78rem;color:var(--amber);margin-top:.3rem}
+.job-when{font-family:var(--mono);font-size:.73rem;color:var(--orange);margin-top:.45rem}
+.job-where{font-family:var(--mono);font-size:.71rem;color:var(--dim);margin-top:.2rem}
+.job-lead{font-size:clamp(.92rem,3.6vw,.97rem);color:var(--bone);max-width:62ch;margin-bottom:1rem}
+
+.job ul{list-style:none;display:grid;gap:.6rem}
+.job li{position:relative;padding-left:1.1rem;font-size:clamp(.88rem,3.5vw,.93rem);color:var(--dim);max-width:64ch}
+.job li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:1px;background:var(--orange)}
+
+/* ================= FOCUS ================= */
+.focus{display:grid;gap:2.1rem}
+@media(min-width:760px){.focus{grid-template-columns:1fr 1fr;gap:3rem 3.5rem}}
+.focus-item{border-left:2px solid var(--rule);padding-left:1.25rem}
+.focus-item p{font-size:clamp(.89rem,3.5vw,.94rem);color:var(--dim);max-width:46ch}
+
+/* ================= WORK ================= */
+.work{display:grid;gap:1.15rem}
+@media(min-width:860px){.work{grid-template-columns:1fr 1fr}}
+
+.tilt-wrap{perspective:900px}
+.case{
+  background:linear-gradient(160deg,var(--panel2),rgba(12,13,16,.92));
+  border:1px solid var(--rule);
+  padding:clamp(1.35rem,5vw,1.9rem) clamp(1.15rem,4.5vw,1.7rem);
+  height:100%;
+  transform-style:preserve-3d;
+  transition:transform .25s ease-out,border-color .25s,box-shadow .25s;
+  will-change:transform;
+}
+@media(hover:hover){
+  .tilt-wrap:hover .case{border-color:var(--orange);box-shadow:0 22px 45px -25px rgba(0,0,0,.95)}
+  .case > *{transform:translateZ(26px)}
+}
+.case-tag{font-family:var(--mono);font-size:.69rem;color:var(--orange);margin-bottom:.5rem}
+.case p{font-size:clamp(.88rem,3.5vw,.92rem);color:var(--dim);max-width:56ch}
+.case p + p{margin-top:.7rem}
+.case-out{
+  font-family:var(--mono);font-size:clamp(.74rem,3vw,.78rem);color:var(--bone);
+  border-left:2px solid var(--orange);padding-left:.85rem;margin-top:1.05rem;max-width:54ch;
+}
+
+/* ================= CERTS ================= */
+.certs{display:grid;gap:1.15rem}
+@media(min-width:820px){.certs{grid-template-columns:repeat(3,1fr)}}
+
+.flip{
+  perspective:1100px;
+  height:clamp(240px,64vw,260px);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.flip-inner{
+  position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;
+  transition:transform .7s cubic-bezier(.3,.8,.3,1);
+}
+@media(hover:hover){
+  .flip:hover .flip-inner{transform:rotateY(180deg)}
+}
+.flip:focus-within .flip-inner,
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+
+.face{
+  position:absolute;inset:0;
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+  border:1px solid var(--rule);
+  padding:clamp(1.2rem,4.5vw,1.7rem) clamp(1.05rem,4vw,1.5rem);
+  display:flex;flex-direction:column;
+  background:linear-gradient(150deg,var(--panel2),rgba(12,13,16,.96));
+  overflow:hidden;
+}
+.face-back{
+  transform:rotateY(180deg);
+  background:linear-gradient(150deg,rgba(250,88,45,.15),rgba(12,13,16,.98));
+  border-color:var(--orange);
+}
+.cert-code{font-family:var(--mono);font-size:clamp(1.3rem,5.5vw,1.55rem);font-weight:600;color:var(--orange);letter-spacing:-.02em;margin-bottom:.5rem}
+.cert-name{font-size:clamp(.88rem,3.5vw,.95rem);font-weight:500;line-height:1.35;margin-bottom:.5rem}
+.cert-issuer{font-family:var(--mono);font-size:.72rem;color:var(--dim)}
+.cert-hint{font-family:var(--mono);font-size:.66rem;color:var(--dim);margin-top:auto;opacity:.75}
+.cert-back-t{font-family:var(--mono);font-size:.71rem;color:var(--orange);margin-bottom:.7rem}
+.face-back ul{list-style:none;display:grid;gap:.38rem;margin-bottom:.9rem}
+.face-back li{font-size:clamp(.78rem,3.2vw,.84rem);color:var(--dim);padding-left:.85rem;position:relative;line-height:1.4}
+.face-back li::before{content:"";position:absolute;left:0;top:.6em;width:4px;height:1px;background:var(--orange)}
+.face-back a{font-family:var(--mono);font-size:.75rem;margin-top:auto;align-self:flex-start}
+
+.edu{font-family:var(--mono);font-size:clamp(.76rem,3vw,.8rem);color:var(--dim);margin-top:1.8rem;display:grid;gap:.5rem}
+.edu b{color:var(--bone);font-weight:500}
+
+/* ================= STACK ================= */
+.stack{display:grid;gap:1.5rem}
+@media(min-width:760px){.stack{grid-template-columns:1fr 1fr;gap:1.6rem 3rem}}
+.stack-row{display:grid;gap:.35rem}
+.stack-k{font-family:var(--mono);font-size:.71rem;color:var(--orange)}
+.stack-v{font-family:var(--mono);font-size:clamp(.76rem,3.1vw,.82rem);color:var(--dim);line-height:1.62;overflow-wrap:anywhere}
+
+/* ================= CONTACT ================= */
+.contact-line{font-size:clamp(1.15rem,4.6vw,1.7rem);letter-spacing:-.02em;max-width:24ch;margin-bottom:1.8rem;line-height:1.3}
+.contact-list{font-family:var(--mono);font-size:clamp(.8rem,3.2vw,.9rem);display:grid;gap:.9rem}
+.contact-row{display:flex;flex-wrap:wrap;gap:.15rem .6rem}
+.contact-row .k{color:var(--dim);flex:0 0 5rem}
+.contact-row .v{min-width:0;overflow-wrap:anywhere}
+
+footer{border-top:1px solid var(--rule);padding:2rem 0 3rem;font-family:var(--mono);font-size:.72rem;color:var(--dim)}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .stackwrap{transform:rotateX(58deg) rotateZ(-38deg)!important;opacity:1!important}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+<div id="bg-veil" aria-hidden="true"></div>
+
+<header class="wrap hero">
+  <div class="hero-grid">
+    <div>
+      <h1 class="hero-name">Sudarshan Reddy<br>Rajapurada</h1>
+      <p class="hero-role">Network Engineer<span class="sep">/</span>Chicago, Illinois</p>
+      <p class="hero-line">Five years keeping enterprise traffic inspected, authenticated, and moving.</p>
+      <div class="hero-meta">
+        <div><strong>Palo Alto NGFW</strong></div>
+        <div><strong>Zscaler ZIA / ZPA / ZCC</strong></div>
+        <div><strong>Cisco routing &amp; switching</strong></div>
+        <div><strong>Azure &amp; AWS</strong></div>
+      </div>
+    </div>
+
+    <div class="scene" aria-hidden="true">
+      <div class="stackwrap" id="stackwrap">
+        <div class="riser"></div>
+        <div class="layer" data-name="access — catalyst / meraki">
+          <span class="node" style="left:18%;top:26%"></span>
+          <span class="node" style="left:62%;top:40%"></span>
+          <span class="node" style="left:38%;top:71%"></span>
+          <span class="node" style="left:79%;top:76%"></span>
+        </div>
+        <div class="layer" data-name="core — bgp / ospf">
+          <span class="node" style="left:30%;top:33%"></span>
+          <span class="node" style="left:67%;top:58%"></span>
+        </div>
+        <div class="layer hot" data-name="edge — palo alto ngfw">
+          <span class="node" style="left:46%;top:46%"></span>
+          <span class="node" style="left:24%;top:66%"></span>
+        </div>
+        <div class="layer hot" data-name="zero trust — zscaler">
+          <span class="node" style="left:52%;top:36%"></span>
+          <span class="node" style="left:33%;top:62%"></span>
+        </div>
+        <div class="layer" data-name="internet / saas">
+          <span class="node" style="left:44%;top:44%"></span>
+          <span class="node" style="left:70%;top:29%"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience">
+  <div class="wrap">
+    <span class="label">experience</span>
+    <h2>Five years, three environments</h2>
+
+    <article class="job">
+      <div class="job-head">
+        <div class="job-org">GoHealth</div>
+        <div class="job-title">Network Engineer</div>
+        <div class="job-when">Oct 2025 — Aug 2026</div>
+        <div class="job-where">Chicago, IL</div>
+      </div>
+      <div>
+        <p class="job-lead">Owned firewall, remote access, and monitoring for a healthcare technology company with sites in the US and Europe plus Azure-hosted workloads.</p>
+        <ul>
+          <li>Hardened the perimeter by deploying Palo Alto threat prevention in phases — Zone Protection, User-ID, Anti-Spyware, and URL Filtering</li>
+          <li>Designed and rolled out SSL Forward Proxy decryption with a layered policy architecture and dynamic bypasses for cloud proxy nodes</li>
+          <li>Ran a Zscaler estate of roughly 1,000 users across ZIA, ZPA, and ZCC; correlated Zscaler and identity logs to speed up investigations</li>
+          <li>Maintained 99.99% firewall and VPN availability for 300–400 remote users; added certificate-based GlobalProtect authentication to enforce managed-device posture</li>
+          <li>Built a resilient syslog-ng and Exabeam pipeline, eliminating duplicate log ingestion and protecting audit-critical telemetry</li>
+          <li>Automated PAN-OS configuration and compliance checks with Ansible against the firewall API</li>
+          <li>Managed SSL/TLS certificate lifecycle across firewalls, PDUs, console servers, vCenter, and AWS IPSec tunnels, eliminating certificate-related outages</li>
+          <li>Configured Entra ID enterprise applications, app registrations, and SSO/MFA access for NOC staff; provisioned Azure VMs and networking</li>
+          <li>Stabilised Meraki wireless across branch access points and cut incident MTTR by roughly 25% through structured troubleshooting and proactive monitoring</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="job">
+      <div class="job-head">
+        <div class="job-org">AIG</div>
+        <div class="job-title">Network Engineer</div>
+        <div class="job-when">Jan 2025 — Jul 2025</div>
+        <div class="job-where">United States — financial services</div>
+      </div>
+      <div>
+        <p class="job-lead">Data center and multi-cloud network engineering inside a global insurer, with a major Zero Trust access migration as the headline project.</p>
+        <ul>
+          <li>Migrated 2,000+ users from GlobalProtect to Zscaler ZPA — application discovery, app segment design, phased cohort cutovers, and vendor escalation management</li>
+          <li>Managed Palo Alto NGFW through Panorama: policy lifecycle, SSL decryption, content filtering, VPN failover, and HA pairs</li>
+          <li>Administered FortiGate policy, VPN, NAT, and high availability alongside the Palo Alto estate</li>
+          <li>Deployed Cisco SDA campus fabric (DNA Center, TrustSec) and ACI data center fabric on Nexus 9000 with policy-driven segmentation</li>
+          <li>Administered Cisco ISE for 802.1x authentication, device profiling, and segmentation across campus and data center</li>
+          <li>Built hybrid connectivity across Azure VNets, AWS Transit Gateway, and site-to-site IPSec with enforced segmentation</li>
+          <li>Engineered isolation between production, non-production, and recovery environments using ACI and VMware NSX micro-segmentation</li>
+          <li>Tuned large-scale BGP, OSPF, and EIGRP topologies and designed HA/DR failover architectures</li>
+          <li>Reduced remote-access security incidents by roughly 30% through Zero Trust enforcement</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="job">
+      <div class="job-head">
+        <div class="job-org">Hexaware Technologies</div>
+        <div class="job-title">Network Engineer</div>
+        <div class="job-when">2020 — 2023</div>
+        <div class="job-where">Bangalore, India</div>
+      </div>
+      <div>
+        <p class="job-lead">Managed-services engineering for globally distributed clients — multi-vendor estates spanning on-premises data centers and cloud.</p>
+        <ul>
+          <li>Delivered Palo Alto NGFW operations across client environments: Panorama management, GlobalProtect, SSL decryption, content filtering, and HA</li>
+          <li>Administered FortiGate firewalls — policy lifecycle, VPN, HA, and firmware upgrades across multi-client environments</li>
+          <li>Implemented Zscaler ZIA/ZPA and Zero Trust access principles for enterprise clients</li>
+          <li>Ran Cisco ACI (Nexus 9000, VXLAN), SDA campus fabric, and Cisco ISE network access control across campus and branch</li>
+          <li>Configured NGFW deep packet inspection and least-privilege ACLs aligned to PCI DSS and NIST, with recurring vulnerability assessments</li>
+          <li>Built multi-cloud networking across AWS, Azure, and GCP with reusable Terraform modules in Git-based CI/CD pipelines</li>
+          <li>Automated configuration management and compliance verification with Python, Bash, PowerShell, Ansible, and REST APIs</li>
+          <li>Administered Linux servers hosting Syslog-NG and SNMP monitoring; managed enterprise DNS including Bind and split-horizon resolution</li>
+          <li>Cut provisioning time by roughly 40% through automation and reduced incident resolution time by roughly 30% via proactive monitoring and structured RCA</li>
+          <li>Mentored junior engineers and maintained diagrams, SOPs, and change management records</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ================= FOCUS ================= -->
+<section id="focus">
+  <div class="wrap">
+    <span class="label">what i run</span>
+    <h2>Where the network meets security</h2>
+    <div class="focus">
+      <div class="focus-item">
+        <h3>Firewalls and threat prevention</h3>
+        <p>Palo Alto NGFW policy design, App-ID enforcement, Anti-Spyware, URL Filtering, Zone Protection, and User-ID. SSL Forward Proxy decryption with layered bypass. Panorama for centralised management.</p>
+      </div>
+      <div class="focus-item">
+        <h3>Zero Trust and remote access</h3>
+        <p>Zscaler ZIA, ZPA, and ZCC across estates from 1,000 to 2,000+ users. GlobalProtect portals and gateways with certificate-based device authentication. IPSec and SSL VPN.</p>
+      </div>
+      <div class="focus-item">
+        <h3>Routing, switching, data center</h3>
+        <p>OSPF, BGP, EIGRP, and HSRP across LAN, WAN, and data center. Cisco ACI fabric — tenants, EPGs, and contracts. Catalyst and Meraki switching and campus wireless.</p>
+      </div>
+      <div class="focus-item">
+        <h3>Cloud, identity, automation</h3>
+        <p>Azure VNets and hybrid connectivity, AWS VPCs and Transit Gateway, Entra ID SSO and MFA. Ansible for PAN-OS configuration and compliance. Syslog-ng pipelines into SIEM.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORK ================= -->
+<section id="work">
+  <div class="wrap">
+    <span class="label">selected work</span>
+    <h2>Problems worth writing down</h2>
+
+    <div class="work">
+      <div class="tilt-wrap">
+        <article class="case">
+          <div class="case-tag">decryption</div>
+          <h3>SSL Forward Proxy rollout</h3>
+          <p>Encrypted traffic was crossing the perimeter uninspected, so threat prevention only saw metadata. Introducing decryption at scale risked breaking pinned certificates and proxied SaaS.</p>
+          <p>Built a decryption CA and a four-rule policy architecture — explicit no-decrypt for regulated categories, dynamic bypass for cloud proxy nodes via external dynamic lists, inspection everywhere else. Piloted first, then tuned exclusions against real failure data.</p>
+          <div class="case-out">Inspection extended across the estate with no sustained application breakage.</div>
+        </article>
+      </div>
+
+      <div class="tilt-wrap">
+        <article class="case">
+          <div class="case-tag">zero trust migration</div>
+          <h3>GlobalProtect to Zscaler ZPA</h3>
+          <p>A global insurer needed 2,000+ users moved off a full-tunnel VPN model onto application-level access, with no flag day and no disruption to regional users on web proxy only.</p>
+          <p>Ran application discovery to find what people actually reached over the tunnel, designed app segments around those flows, and cut over in phased cohorts with rollback at each stage.</p>
+          <div class="case-out">2,000+ users migrated; per-application access replaced full network exposure.</div>
+        </article>
+      </div>
+
+      <div class="tilt-wrap">
+        <article class="case">
+          <div class="case-tag">device trust</div>
+          <h3>Certificate-based VPN authentication</h3>
+          <p>Credentials and MFA proved who was connecting but said nothing about what from — a valid login on an unmanaged laptop looked identical to a corporate asset.</p>
+          <p>Added a machine certificate as an authentication factor on the GlobalProtect portal and gateway, and coordinated issuance so the rollout stayed invisible to end users.</p>
+          <div class="case-out">Managed-device posture became an enforced condition of access.</div>
+        </article>
+      </div>
+
+      <div class="tilt-wrap">
+        <article class="case">
+          <div class="case-tag">observability</div>
+          <h3>Rebuilding the log pipeline</h3>
+          <p>Duplicate ingestion paths were sending the same events into the SIEM more than once, inflating volume and putting audit-critical telemetry at risk of being dropped.</p>
+          <p>Traced every source and forwarding path, rebuilt the syslog-ng layer with one authoritative route per source, and validated end to end before decommissioning the redundant paths.</p>
+          <div class="case-out">Duplicate ingestion eliminated; SIEM data quality restored.</div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CERTIFICATIONS ================= -->
+<section id="certifications">
+  <div class="wrap">
+    <span class="label">certifications</span>
+    <h2>Verified credentials</h2>
+
+    <div class="certs">
+
+      <div class="flip" tabindex="0">
+        <div class="flip-inner">
+          <div class="face">
+            <div class="cert-code">PCNSE</div>
+            <div class="cert-name">Palo Alto Networks Certified Network Security Engineer</div>
+            <div class="cert-issuer">Palo Alto Networks — July 2025</div>
+            <div class="cert-hint">tap to see coverage</div>
+          </div>
+          <div class="face face-back">
+            <div class="cert-back-t">exam coverage</div>
+            <ul>
+              <li>NGFW deployment and policy design</li>
+              <li>SSL decryption and App-ID</li>
+              <li>Panorama and HA architecture</li>
+              <li>GlobalProtect and User-ID</li>
+            </ul>
+            <a href="https://cp.certmetrics.com/paloaltonetworks/en/public/verify/credential/caea2931e23a44099042a2ec28da64c2" target="_blank" rel="noopener noreferrer">Verify credential</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip" tabindex="0">
+        <div class="flip-inner">
+          <div class="face">
+            <div class="cert-code">CCNP</div>
+            <div class="cert-name">Cisco Certified Network Professional — Enterprise Core (ENCOR)</div>
+            <div class="cert-issuer">Cisco — July 2025</div>
+            <div class="cert-hint">tap to see coverage</div>
+          </div>
+          <div class="face face-back">
+            <div class="cert-back-t">exam coverage</div>
+            <ul>
+              <li>Enterprise architecture and design</li>
+              <li>Advanced routing — OSPF, BGP, EIGRP</li>
+              <li>Overlay and virtualisation</li>
+              <li>Network assurance and automation</li>
+            </ul>
+            <a href="https://cp.certmetrics.com/cisco/en/public/verify/credential/0839c7ba9a4748dbbb47a55f0a235615" target="_blank" rel="noopener noreferrer">Verify credential</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip" tabindex="0">
+        <div class="flip-inner">
+          <div class="face">
+            <div class="cert-code">CCNA</div>
+            <div class="cert-name">Cisco Certified Network Associate (200-301)</div>
+            <div class="cert-issuer">Cisco — July 2024</div>
+            <div class="cert-hint">tap to see coverage</div>
+          </div>
+          <div class="face face-back">
+            <div class="cert-back-t">exam coverage</div>
+            <ul>
+              <li>Routing and switching fundamentals</li>
+              <li>IP connectivity and services</li>
+              <li>Security fundamentals and ACLs</li>
+              <li>Automation and programmability</li>
+            </ul>
+            <a href="https://cp.certmetrics.com/cisco/en/public/verify/credential/0776592e5d764544a61860801b11ef11" target="_blank" rel="noopener noreferrer">Verify credential</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="edu">
+      <div><b>MS Cybersecurity</b> — DePaul University, 2025</div>
+      <div><b>BE Computer Science</b> — Visvesvaraya Technological University, 2022</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STACK ================= -->
+<section id="stack">
+  <div class="wrap">
+    <span class="label">stack</span>
+    <h2>Hands-on</h2>
+    <div class="stack">
+      <div class="stack-row"><div class="stack-k">firewalls</div><div class="stack-v">Palo Alto NGFW, Panorama, GlobalProtect, FortiGate, Cisco ASA / FTD</div></div>
+      <div class="stack-row"><div class="stack-k">zero trust</div><div class="stack-v">Zscaler ZIA, ZPA, ZCC, Cisco ISE, 802.1x, micro-segmentation</div></div>
+      <div class="stack-row"><div class="stack-k">routing &amp; switching</div><div class="stack-v">BGP, OSPF, EIGRP, HSRP, VLANs, VXLAN, STP, QoS, IPSec</div></div>
+      <div class="stack-row"><div class="stack-k">cisco platforms</div><div class="stack-v">ACI / Nexus 9000, Catalyst, Meraki, DNA Center, IOS-XE</div></div>
+      <div class="stack-row"><div class="stack-k">cloud</div><div class="stack-v">Azure VNets, NSGs, Azure Firewall, Entra ID · AWS VPC, Transit Gateway, site-to-site VPN</div></div>
+      <div class="stack-row"><div class="stack-k">automation</div><div class="stack-v">Ansible, Terraform, Python, Bash, PowerShell, REST APIs, Git</div></div>
+      <div class="stack-row"><div class="stack-k">observability</div><div class="stack-v">Syslog-ng, Exabeam, Splunk, SolarWinds, Grafana, Wireshark, SNMP, NetFlow</div></div>
+      <div class="stack-row"><div class="stack-k">platforms</div><div class="stack-v">VMware vCenter / ESXi / NSX, Linux (RHEL, Ubuntu), Windows Server</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <span class="label">contact</span>
+    <p class="contact-line">Open to network and network security engineering roles.</p>
+    <div class="contact-list">
+      <div class="contact-row"><span class="k">email</span><span class="v"><a href="mailto:rajapuradasudarshanreddy@gmail.com">rajapuradasudarshanreddy@gmail.com</a></span></div>
+      <div class="contact-row"><span class="k">linkedin</span><span class="v"><a href="https://www.linkedin.com/in/sudarshan-reddy-rajapurada-252b59156/" rel="noopener">sudarshan-reddy-rajapurada</a></span></div>
+      <!-- REPLACE href and label with your GitHub profile -->
+      <div class="contact-row"><span class="k">github</span><span class="v"><a href="#" rel="noopener">github.com/your-username</a></span></div>
+      <!-- REPLACE href with a link to your hosted resume PDF -->
+      <div class="contact-row"><span class="k">resume</span><span class="v"><a href="#" rel="noopener">Download PDF</a></span></div>
+      <div class="contact-row"><span class="k">location</span><span class="v">Chicago, Illinois — open to relocation</span></div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">Sudarshan Reddy Rajapurada</div></footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canHover = window.matchMedia('(hover: hover)').matches;
+  if(reduce || !canHover) return;
+
+  /* --- hero topology follows the pointer (pointer devices only) --- */
+  var sw = document.getElementById('stackwrap');
+  if(sw){
+    var scene = sw.parentElement, raf = null;
+    scene.addEventListener('mousemove', function(e){
+      if(raf) return;
+      raf = requestAnimationFrame(function(){
+        var r = scene.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - .5;
+        var py = (e.clientY - r.top) / r.height - .5;
+        sw.style.animation = 'none';
+        sw.style.transform = 'rotateX(' + (58 - py*22) + 'deg) rotateZ(' + (-38 + px*30) + 'deg)';
+        raf = null;
+      });
+    });
+    scene.addEventListener('mouseleave', function(){
+      sw.style.transform = 'rotateX(58deg) rotateZ(-38deg)';
+    });
+  }
+
+  /* --- case cards tilt toward the cursor --- */
+  document.querySelectorAll('.tilt-wrap').forEach(function(w){
+    var card = w.querySelector('.case'), raf2 = null;
+    w.addEventListener('mousemove', function(e){
+      if(raf2) return;
+      raf2 = requestAnimationFrame(function(){
+        var r = w.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - .5;
+        var py = (e.clientY - r.top) / r.height - .5;
+        card.style.transform = 'rotateX(' + (-py*7) + 'deg) rotateY(' + (px*9) + 'deg) translateZ(6px)';
+        raf2 = null;
+      });
+    });
+    w.addEventListener('mouseleave', function(){ card.style.transform = ''; });
+  });
+})();
+
+/* tap to flip certificates — always on, every device */
+(function(){
+  document.querySelectorAll('.flip').forEach(function(f){
+    f.addEventListener('click', function(e){
+      if(e.target.closest('a')) return;
+      f.classList.toggle('flipped');
+    });
+    f.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        f.classList.toggle('flipped');
+      }
+    });
+  });
+})();
+
+/* =========================================================
+   3D packet field — nodes in perspective, packets in transit
+   ========================================================= */
+(function(){
+  var cv = document.getElementById('bg');
+  if(!cv) return;
+  var ctx = cv.getContext('2d');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var W, H, DPR, FOCAL, SPREAD;
+  var nodes = [], links = [], packets = [];
+  var yaw = -0.35, pitch = 0.22, running = true;
+  var lastW = 0, lastH = 0;
+
+  var NODE_COUNT, LINK_DIST, PACKETS, MAX_LINKS = 3;
+
+  /* scale the whole field to the device — phones get a lighter load */
+  function tune(){
+    var w = window.innerWidth;
+    if(w < 560){
+      NODE_COUNT = 22; PACKETS = 18; LINK_DIST = 300; SPREAD = 620;
+      DPR = 1;                                  // phones: skip retina, keep it smooth
+    } else if(w < 1000){
+      NODE_COUNT = 32; PACKETS = 28; LINK_DIST = 320; SPREAD = 760;
+      DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+    } else {
+      NODE_COUNT = 46; PACKETS = 42; LINK_DIST = 340; SPREAD = 900;
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+    }
+  }
+
+  function sizeCanvas(){
+    W = window.innerWidth;
+    H = window.innerHeight;
+    cv.width  = Math.round(W * DPR);
+    cv.height = Math.round(H * DPR);
+    cv.style.width  = W + 'px';
+    cv.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    FOCAL = Math.max(W, H) * 0.9;
+  }
+
+  function build(){
+    nodes = []; links = []; packets = [];
+
+    for(var i = 0; i < NODE_COUNT; i++){
+      nodes.push({
+        x: (Math.random() - .5) * SPREAD * 1.6,
+        y: (Math.random() - .5) * SPREAD * 0.9,
+        z: (Math.random() - .5) * SPREAD
+      });
+    }
+
+    for(var a = 0; a < nodes.length; a++){
+      var near = [];
+      for(var b = 0; b < nodes.length; b++){
+        if(a === b) continue;
+        var dx = nodes[a].x - nodes[b].x,
+            dy = nodes[a].y - nodes[b].y,
+            dz = nodes[a].z - nodes[b].z;
+        var d = Math.sqrt(dx*dx + dy*dy + dz*dz);
+        if(d < LINK_DIST) near.push({ i: b, d: d });
+      }
+      near.sort(function(p, q){ return p.d - q.d; });
+      for(var k = 0; k < Math.min(MAX_LINKS, near.length); k++){
+        var j = near[k].i;
+        if(a < j) links.push({ a: a, b: j });
+      }
+    }
+
+    if(!links.length) return;
+    for(var p = 0; p < PACKETS; p++) packets.push(spawn());
+  }
+
+  function spawn(){
+    return {
+      link: (Math.random() * links.length) | 0,
+      t: Math.random(),
+      speed: 0.0016 + Math.random() * 0.0034,
+      dir: Math.random() < .5 ? 1 : -1,
+      warm: Math.random() < .55
+    };
+  }
+
+  function project(x, y, z){
+    var cy = Math.cos(yaw),   sy = Math.sin(yaw);
+    var cx = Math.cos(pitch), sx = Math.sin(pitch);
+
+    var x1 =  x * cy + z * sy;
+    var z1 = -x * sy + z * cy;
+    var y1 =  y * cx - z1 * sx;
+    var z2 =  y * sx + z1 * cx;
+
+    var depth = z2 + SPREAD * 1.5;
+    if(depth < 60) return null;
+
+    var s = FOCAL / depth;
+    return { x: W/2 + x1 * s, y: H/2 + y1 * s, s: s };
+  }
+
+  function frame(){
+    ctx.clearRect(0, 0, W, H);
+
+    var proj = new Array(nodes.length);
+    for(var i = 0; i < nodes.length; i++){
+      proj[i] = project(nodes[i].x, nodes[i].y, nodes[i].z);
+    }
+
+    ctx.lineWidth = 1;
+    for(var l = 0; l < links.length; l++){
+      var pa = proj[links[l].a], pb = proj[links[l].b];
+      if(!pa || !pb) continue;
+      var alpha = Math.min(pa.s, pb.s) * 0.20;
+      if(alpha < 0.012) continue;
+      ctx.strokeStyle = 'rgba(255,157,77,' + Math.min(alpha, 0.13).toFixed(3) + ')';
+      ctx.beginPath();
+      ctx.moveTo(pa.x, pa.y);
+      ctx.lineTo(pb.x, pb.y);
+      ctx.stroke();
+    }
+
+    for(var n = 0; n < proj.length; n++){
+      var pn = proj[n];
+      if(!pn) continue;
+      var r = Math.max(0.6, pn.s * 1.5);
+      ctx.fillStyle = 'rgba(255,157,77,' + Math.min(pn.s * 0.38, 0.28).toFixed(3) + ')';
+      ctx.beginPath();
+      ctx.arc(pn.x, pn.y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    for(var q = 0; q < packets.length; q++){
+      var pk = packets[q];
+      var lk = links[pk.link];
+      if(!lk){ packets[q] = spawn(); continue; }
+
+      var na = nodes[lk.a], nb = nodes[lk.b];
+      var t  = pk.dir > 0 ? pk.t : 1 - pk.t;
+      var pp = project(
+        na.x + (nb.x - na.x) * t,
+        na.y + (nb.y - na.y) * t,
+        na.z + (nb.z - na.z) * t
+      );
+
+      if(pp){
+        var rad = Math.max(1, pp.s * 2.6);
+        var a   = Math.min(pp.s * 1.15, 0.85);
+        var col = pk.warm ? '250,88,45' : '255,157,77';
+
+        var g = ctx.createRadialGradient(pp.x, pp.y, 0, pp.x, pp.y, rad * 4.5);
+        g.addColorStop(0, 'rgba(' + col + ',' + (a * 0.7).toFixed(3) + ')');
+        g.addColorStop(1, 'rgba(' + col + ',0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(pp.x, pp.y, rad * 4.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = 'rgba(' + col + ',' + a.toFixed(3) + ')';
+        ctx.beginPath();
+        ctx.arc(pp.x, pp.y, rad, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      pk.t += pk.speed;
+      if(pk.t >= 1) packets[q] = spawn();
+    }
+  }
+
+  function loop(){
+    if(!running) return;
+    yaw  += 0.00042;
+    pitch = 0.22 + Math.sin(yaw * 0.7) * 0.05;
+    frame();
+    requestAnimationFrame(loop);
+  }
+
+  function init(){
+    tune();
+    sizeCanvas();
+    lastW = W; lastH = H;
+    build();
+    if(reduce){ frame(); return; }
+    loop();
+  }
+
+  var resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){
+      var nw = window.innerWidth, nh = window.innerHeight;
+
+      /* On phones the URL bar collapsing fires resize constantly and only
+         changes height. Re-fit the canvas but don't rebuild the field. */
+      if(nw === lastW && Math.abs(nh - lastH) < 160){
+        sizeCanvas();
+        lastH = nh;
+        if(reduce) frame();
+        return;
+      }
+
+      tune();
+      sizeCanvas();
+      build();
+      lastW = nw; lastH = nh;
+      if(reduce) frame();
+    }, 200);
+  });
+
+  window.addEventListener('orientationchange', function(){
+    setTimeout(function(){ tune(); sizeCanvas(); build(); if(reduce) frame(); }, 300);
+  });
+
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ running = false; }
+    else if(!reduce && !running){ running = true; loop(); }
+  });
+
+  init();
+})();
+</script>
+
+</body>
+</html>
